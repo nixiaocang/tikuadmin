@@ -13,8 +13,11 @@ password 123456
 ```
 
 前端项目启动： 
-    cd tiku_fe
-    npm install
-    npm run dev
+cd tiku_fe
+
+npm install
+
+npm run dev
+
 打开浏览器访问终端的地址
 
