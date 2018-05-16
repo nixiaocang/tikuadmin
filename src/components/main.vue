@@ -28,34 +28,55 @@
 <script>
 const navList = [{
                     index: '1',
-                    title: '同步管理'
+                    title: '同步管理',
+                    path: '/main/sync_manage'
                 },{
                     index: '2',
-                    title: '任务概览'
+                    title: '任务概览',
+                    path: '/main/task_overview'
                 },{
                     index: '3',
-                    title: '查询修改'
+                    title: '查询修改',
+                    path: '/main/query_update'
                 }];
 import AsideNav from './aside-nav.vue';
     export default {
         data() {
             return {
-                env: 'offline',
-                userInfo: {},
                 navList: [],
-                defaultActive: {},
+                // defaultActive: {},
                 breadcrumb: [],
             }
         },
         created() {
             this.fetchNavList();
         },
+        computed: {
+            env: {
+                get() {
+                    return this.$store.getters.getEnv;
+                },
+                set(val) {
+                    this.confirmChangeEnv(val);
+                }
+            },
+            defaultActive() {
+                let path = this.$route.path;
+                let active = this.navList.filter(i => i.path == path);
+                this.breadcrumb = active;
+                return active[0];
+            },
+            userInfo() {
+                let info = {};
+                info.username = this.$cookie.get('username');
+                return info;
+                // return this.$store.getters.getUserInfo;
+            }
+        },
         methods: {
             // 这里同步取得导航列表，之后需要异步再更新
             fetchNavList() {
                 this.navList = navList;
-                this.defaultActive = this.navList[0];
-                this.breadcrumb.push(this.navList[0]);
             },
             handleCommand(command) {
                 if(command == 'logout') return this.logout();
@@ -71,6 +92,7 @@ import AsideNav from './aside-nav.vue';
                         type: 'success',
                         message: '退出成功!'
                     });
+                    location.href = '/login';
                 }).catch(() => {
                     this.$message({
                         type: 'info',
@@ -80,18 +102,22 @@ import AsideNav from './aside-nav.vue';
             },
             navChange(key, keyPath) {
                 let active = this.navList.filter(i => i.index === key);
-                this.breadcrumb = active;
-                this.defaultActive = active[0];
+                this.$router.push({path: active[0].path});
+            },
+            confirmChangeEnv(val) {
+                this.$confirm(`此操作将系统环境切换为${val == 'offline' ? '线下' : '线上'}, 将会丢失未保存的表单,请确认是否继续?`, '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.$store.commit('updateEnv', val);
+                }).catch(() => {
+                             
+                });
             }
         },
         watch: {
-            env: {
-                handler(val) {
-                    if(!val) return;
-                    this.$store.commit('updateEnv', val);
-                },
-                immediate: true
-            }
+            
         },
         components: {
             'aside-nav': AsideNav,

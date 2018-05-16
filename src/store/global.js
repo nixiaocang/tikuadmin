@@ -6,7 +6,7 @@ Vue.use(Vuex);
 const state = {
     signed: false,
     userInfo: {},
-    env: ''
+    env: 'offline'
 };
 
 const mutations = {

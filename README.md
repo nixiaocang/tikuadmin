@@ -1,22 +1,21 @@
-文件说明
+# tiku_fe
 
-文件夹admin 前端模板参考来源
-文件夹tiku_fe    前端主站
-文件后端接口文档.md  后端接口文档
-```
-http://123.59.139.41:9000/  线上地址 
+> A Vue.js project
 
-username admin 
-password 123456
+## Build Setup
 
-无数据 只是展示现有的页面接口以及状态
-```
-
-前端项目启动：
-``` 
-cd tiku_fe
+``` bash
+# install dependencies
 npm install
+
+# serve with hot reload at localhost:8081
 npm run dev
-打开浏览器访问终端的地址
+
+# build for production with minification
+npm run build
+
+# build for production and view the bundle analyzer report
+npm run build --report
 ```
 
+For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
